@@ -3,272 +3,413 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Applications ITANIS</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<title>ITANIS – Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg:    #ffffff;
-  --s1:    #f8f7f5;
-  --s2:    #f0ede8;
-  --or:    #ff8c00;
-  --orl:   #ffac33;
-  --ord:   #cc6e00;
-  --og10:  rgba(255,140,0,0.10);
-  --og20:  rgba(255,140,0,0.20);
-  --og40:  rgba(255,140,0,0.40);
-  --wh:    #ffffff;
-  --tx:    #1a1a18;
-  --tx2:   #444440;
-  --bd:    rgba(0,0,0,0.08);
-  --fh:    'Syne', sans-serif;
-  --fb:    'DM Sans', sans-serif;
+  --bg:   #f5f4f2;
+  --wh:   #ffffff;
+  --s1:   #f9f8f6;
+  --or:   #ff8c00;
+  --orl:  #ffac33;
+  --ord:  #cc6e00;
+  --og05: rgba(255,140,0,0.05);
+  --og08: rgba(255,140,0,0.08);
+  --og15: rgba(255,140,0,0.15);
+  --og20: rgba(255,140,0,0.20);
+  --og40: rgba(255,140,0,0.40);
+  --tx:   #1a1a18;
+  --tx2:  #555550;
+  --tx3:  #aaaaaa;
+  --bd:   rgba(0,0,0,0.07);
+  --f:    'Poppins', sans-serif;
 }
-
 html, body {
   background: var(--bg); color: var(--tx);
-  color: var(--tx);
-  font-family: var(--fb);
-  -webkit-font-smoothing: antialiased;
-  width: 100%;
-  overflow-x: hidden;
+  font-family: var(--f); -webkit-font-smoothing: antialiased; width: 100%;
 }
 
-/* ── BG GLOW ── */
-.bg-glow {
-  position: fixed; pointer-events: none; z-index: 0;
-  top: -120px; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 400px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255,140,0,0.05) 0%, transparent 70%);
-}
+/* ══════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════ */
 
-.section {
-  position: relative; z-index: 1;
-  padding: 2.5rem 2rem 3rem;
-  max-width: 900px; margin: 0 auto;
-}
-
-/* ── HEADER ── */
-.sec-head {
-  display: flex; align-items: center; gap: 14px;
-  margin-bottom: 2.2rem;
-}
-.sec-line {
-  width: 3px; height: 28px; border-radius: 2px;
-  background: linear-gradient(180deg, var(--or), transparent);
-}
-.sec-label {
-  font-family: var(--fh);
-  font-size: 0.70rem; font-weight: 700;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--or);
-}
-.sec-rule {
-  flex: 1; height: 1px;
-  background: linear-gradient(to right, var(--og20), transparent);
-}
-
-/* ── GRID ── */
-.apps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-/* ── CARD ── */
-.app-card {
-  position: relative;
-  background: var(--s1);
-  border: 1px solid var(--bd);
-  border-radius: 20px;
-  padding: 2rem 1.2rem 1.6rem;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 1.2rem;
-  text-decoration: none; color: inherit;
-  overflow: hidden;
-  transition: transform .3s cubic-bezier(.34,1.4,.64,1), border-color .3s, box-shadow .3s;
-  animation: fadeUp .5s ease both;
-}
-.app-card:nth-child(1) { animation-delay: .0s; }
-.app-card:nth-child(2) { animation-delay: .1s; }
-.app-card:nth-child(3) { animation-delay: .2s; }
-
+/* entrance */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(18px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
 }
 
-/* card glow on hover */
-.app-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(255,140,0,0.10) 0%, transparent 65%);
-  opacity: 0; transition: opacity .3s;
-  border-radius: inherit;
+/* floating idle on app icons */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
 }
-/* top border accent */
+
+/* shimmer sweep */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* pulse ring on app card hover */
+@keyframes pulseRing {
+  0%   { transform:scale(1);   opacity:0.6; }
+  100% { transform:scale(1.35); opacity:0; }
+}
+
+/* divider draw */
+@keyframes drawLine {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* doc icon bounce on hover */
+@keyframes iconBounce {
+  0%,100% { transform: scale(1); }
+  40%     { transform: scale(1.18) rotate(-4deg); }
+  70%     { transform: scale(0.95) rotate(2deg); }
+}
+
+/* left bar slide in */
+@keyframes barSlide {
+  from { height: 0; top: 50%; }
+  to   { height: 100%; top: 0; }
+}
+
+/* glow pulse on icon box */
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 4px 14px var(--gs, rgba(113,75,103,0.25)); }
+  50%     { box-shadow: 0 8px 28px var(--gs, rgba(113,75,103,0.50)); }
+}
+
+/* ══════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════ */
+.page { padding: 1.6rem 1.8rem 2.4rem; display: flex; flex-direction: column; gap: 2rem; }
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,140,0,0.30), transparent);
+  transform-origin: center;
+  animation: drawLine .8s cubic-bezier(.4,0,.2,1) .3s both;
+}
+
+/* ══════════════════════
+   APPS
+══════════════════════ */
+.apps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+
+.app-card {
+  background: var(--wh);
+  border: 1.5px solid var(--bd);
+  border-radius: 18px;
+  padding: 1.8rem 1rem 1.4rem;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  text-decoration: none; color: inherit;
+  position: relative; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: transform .32s cubic-bezier(.34,1.4,.64,1), box-shadow .32s, border-color .32s;
+  animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both;
+  cursor: pointer;
+}
+.app-card:nth-child(1){ animation-delay:.05s }
+.app-card:nth-child(2){ animation-delay:.13s }
+.app-card:nth-child(3){ animation-delay:.21s }
+
+/* shimmer overlay */
+.app-card::before {
+  content:'';
+  position:absolute; inset:0; border-radius:inherit;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
+  background-size: 200% 100%;
+  opacity:0; transition: opacity .3s;
+  pointer-events: none;
+}
+/* top glow line */
 .app-card::after {
-  content: '';
-  position: absolute; top: 0; left: 10%; right: 10%; height: 1.5px;
+  content:''; position:absolute; top:0; left:10%; right:10%; height:2px;
   background: linear-gradient(to right, transparent, var(--or), transparent);
-  opacity: 0; transition: opacity .3s;
+  opacity:0; transition: opacity .3s;
+  border-radius: 0 0 2px 2px;
 }
 
 .app-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--og40);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(255,140,0,0.08);
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(255,140,0,0.32);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,140,0,0.08);
 }
-.app-card:hover::before { opacity: 1; }
-.app-card:hover::after  { opacity: 1; }
-.app-card:hover .icon-wrap { transform: scale(1.08); }
-.app-card:hover .app-name  { color: var(--orl); }
+.app-card:hover::before { opacity:1; animation: shimmer 1.2s linear; }
+.app-card:hover::after  { opacity:1; }
 .app-card:active { transform: translateY(-3px) scale(0.98); }
 
-/* ── ICON WRAP ── */
+/* pulse ring behind icon */
 .icon-wrap {
-  width: 80px; height: 80px;
-  border-radius: 22px;
+  position: relative;
   display: flex; align-items: center; justify-content: center;
-  position: relative; z-index: 1;
-  transition: transform .3s cubic-bezier(.34,1.4,.64,1);
+}
+.icon-wrap::before {
+  content:'';
+  position:absolute; inset:-6px; border-radius:22px;
+  border: 2px solid var(--or);
+  opacity:0; transform:scale(1);
+  transition: opacity .2s;
+}
+.app-card:hover .icon-wrap::before {
+  animation: pulseRing .6s ease-out forwards;
 }
 
-/* ODOO */
-.icon-wrap.odoo {
-  background: linear-gradient(135deg, #2d1a4a 0%, #1a0f2e 100%);
-  border: 1px solid rgba(168,85,247,0.25);
-  box-shadow: 0 4px 20px rgba(168,85,247,0.15);
+.icon-box {
+  width: 68px; height: 68px; border-radius: 17px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .32s cubic-bezier(.34,1.4,.64,1), box-shadow .32s;
+  flex-shrink: 0; position: relative; z-index: 1;
 }
-.app-card:hover .icon-wrap.odoo {
-  box-shadow: 0 8px 30px rgba(168,85,247,0.25);
-}
+.icon-box.odoo { background:#fff; border:1.5px solid rgba(113,75,103,0.15); --gs:rgba(113,75,103,0.25); }
+.icon-box.erp  { background: linear-gradient(135deg,#0b5394,#1a73e8); --gs:rgba(11,83,148,0.30); }
+.icon-box.web  { background:#fff; border:1.5px solid rgba(255,107,53,0.15); --gs:rgba(255,107,53,0.25); }
 
-/* ERP */
-.icon-wrap.erp {
-  background: linear-gradient(135deg, #1a1a18 0%, #0c0c0a 100%);
-  border: 1px solid rgba(255,140,0,0.25);
-  box-shadow: 0 4px 20px rgba(255,140,0,0.10);
-}
-.app-card:hover .icon-wrap.erp {
-  box-shadow: 0 8px 30px rgba(255,140,0,0.20);
-}
+.app-card:hover .icon-box { transform: scale(1.10) rotate(-2deg); animation: glowPulse 1.4s ease-in-out infinite; }
 
-/* WEB */
-.icon-wrap.web {
-  background: linear-gradient(135deg, #2a1200 0%, #180a00 100%);
-  border: 1px solid rgba(255,140,0,0.25);
-  box-shadow: 0 4px 20px rgba(255,80,0,0.12);
-}
-.app-card:hover .icon-wrap.web {
-  box-shadow: 0 8px 30px rgba(255,80,0,0.22);
-}
+/* idle float on icon (only when not hovered) */
+.icon-box { animation: float 3.5s ease-in-out infinite; }
+.app-card:nth-child(2) .icon-box { animation-delay: .5s; }
+.app-card:nth-child(3) .icon-box { animation-delay: 1s; }
+.app-card:hover .icon-box { animation: glowPulse 1.4s ease-in-out infinite; }
 
-/* ── NAME ── */
 .app-name {
-  font-family: var(--fh);
-  font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--tx2);
-  transition: color .3s; z-index: 1;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--tx2); transition: color .25s, letter-spacing .25s;
 }
+.app-card:hover .app-name { color: var(--or); letter-spacing: 0.12em; }
 
-/* ── ARROW ── */
-.app-arrow {
-  position: absolute; bottom: 1rem; right: 1rem;
-  width: 24px; height: 24px; border-radius: 50%;
+.open-pill {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--og08); border: 1px solid rgba(255,140,0,0.18);
+  border-radius: 20px; padding: 3px 12px;
+  font-size: 0.60rem; font-weight: 600; color: var(--ord);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .28s, transform .28s;
+}
+.open-pill svg { width:8px; height:8px; stroke:var(--or); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.app-card:hover .open-pill { opacity:1; transform:translateY(0); }
+
+/* ══════════════════════
+   DOCS
+══════════════════════ */
+.docs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+
+.doc-card {
+  background: var(--wh);
+  border: 1px solid var(--bd);
+  border-radius: 13px;
+  padding: 1rem 1rem 1rem 1.3rem;
+  display: flex; align-items: center; gap: 11px;
+  text-decoration: none; color: inherit;
+  position: relative; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: transform .26s cubic-bezier(.34,1.4,.64,1), box-shadow .26s, border-color .26s, background .26s;
+  animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both;
+}
+.doc-card:nth-child(1){animation-delay:.08s} .doc-card:nth-child(2){animation-delay:.13s}
+.doc-card:nth-child(3){animation-delay:.18s} .doc-card:nth-child(4){animation-delay:.23s}
+.doc-card:nth-child(5){animation-delay:.28s} .doc-card:nth-child(6){animation-delay:.33s}
+.doc-card:nth-child(7){animation-delay:.38s} .doc-card:nth-child(8){animation-delay:.43s}
+.doc-card:nth-child(9){animation-delay:.48s}
+
+/* animated left bar */
+.doc-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3.5px;
+  background: linear-gradient(180deg, var(--lc, var(--or)), transparent);
+  transform-origin: top;
+  transition: transform .3s ease;
+}
+/* ripple on click */
+.doc-card::after {
+  content:''; position:absolute;
+  width:0; height:0; border-radius:50%;
+  background: radial-gradient(circle, var(--og15) 0%, transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  transition: width .4s ease, height .4s ease, opacity .4s ease;
+  opacity:0; pointer-events:none;
+}
+.doc-card:active::after { width:200px; height:200px; opacity:1; }
+
+.doc-card:hover {
+  transform: translateX(5px);
+  border-color: rgba(255,140,0,0.22);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.09);
+  background: #fefefe;
+}
+.doc-card:hover .doc-icon {
+  background: var(--og08);
+  border-color: rgba(255,140,0,0.22);
+  animation: iconBounce .5s ease;
+}
+.doc-card:active { transform: translateX(2px); }
+
+.doc-icon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--s1); border: 1px solid var(--bd);
+  font-size: 18px;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.doc-body { flex:1; min-width:0; }
+.doc-name {
+  font-size: 0.76rem; font-weight: 600; color: var(--tx); line-height: 1.3;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  transition: color .25s;
+}
+.doc-sub  { font-size: 0.62rem; color: var(--tx3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+.doc-card:hover .doc-name { color: var(--or); }
+
+.doc-arr {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink:0;
   border: 1px solid var(--bd);
   display: flex; align-items: center; justify-content: center;
-  opacity: 0; transform: translate(4px, -4px);
-  transition: opacity .25s, transform .25s, border-color .25s;
+  opacity:0; transform: translateX(-6px) scale(0.8);
+  transition: opacity .22s, transform .22s cubic-bezier(.34,1.4,.64,1), border-color .22s, background .22s;
 }
-.app-arrow svg { width: 10px; height: 10px; stroke: var(--or); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.app-card:hover .app-arrow {
-  opacity: 1; transform: translate(0,0);
-  border-color: var(--og40);
-}
+.doc-arr svg { width:8px; height:8px; stroke:var(--or); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.doc-card:hover .doc-arr { opacity:1; transform:translateX(0) scale(1); border-color:var(--og40); background: var(--og08); }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 560px) {
-  .section { padding: 1.5rem 1rem 2rem; }
-  .apps-grid { gap: 10px; }
-  .icon-wrap { width: 64px; height: 64px; border-radius: 18px; }
-  .app-card { padding: 1.5rem 0.8rem 1.2rem; border-radius: 16px; }
+/* responsive */
+@media (max-width:700px) {
+  .apps-grid { gap:8px; }
+  .docs-grid  { grid-template-columns: repeat(2,1fr); }
+  .icon-box { width:56px; height:56px; border-radius:14px; }
+  .app-card { padding:1.4rem 0.7rem 1.1rem; border-radius:14px; }
+  .page { padding:1.2rem 1rem 2rem; gap:1.5rem; }
 }
+@media (max-width:440px) { .docs-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+<div class="page">
 
-<div class="bg-glow"></div>
-
-<div class="section">
-  <div class="sec-head">
-    <div class="sec-line"></div>
-    <span class="sec-label">Applications</span>
-    <div class="sec-rule"></div>
-  </div>
-
+  <!-- APPS -->
   <div class="apps-grid">
 
-    <!-- ODOO -->
     <a href="https://odoo.itanis.tn/web/login" target="_blank" class="app-card">
-      <div class="icon-wrap odoo">
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-          <circle cx="19" cy="19" r="12" stroke="#a855f7" stroke-width="2.5"/>
-          <circle cx="19" cy="19" r="6" fill="#7c3aed" opacity="0.5"/>
-          <circle cx="19" cy="19" r="2.5" fill="#c084fc"/>
-        </svg>
+      <div class="icon-wrap">
+        <div class="icon-box odoo">
+          <svg width="46" height="28" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="18" fill="none" stroke="#714B67" stroke-width="6"/>
+            <circle cx="30" cy="30" r="7" fill="#714B67"/>
+            <text x="56" y="38" font-family="Arial,sans-serif" font-weight="bold" font-size="32" fill="#714B67">odoo</text>
+          </svg>
+        </div>
       </div>
-      <span class="app-name">ODOO</span>
-      <div class="app-arrow"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></div>
+      <div class="app-name">ODOO</div>
+      <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
     </a>
 
-    <!-- ERP -->
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Socit/Forms/AllItems.aspx" target="_blank" class="app-card">
-      <div class="icon-wrap erp">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <rect x="4" y="6" width="28" height="20" rx="3" stroke="#ff8c00" stroke-width="2"/>
-          <path d="M10 14h16M10 19h10" stroke="#ff8c00" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="26" cy="19" r="4" stroke="#ffac33" stroke-width="1.8"/>
-          <path d="M29 22l2.5 2.5" stroke="#ffac33" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M12 30h12" stroke="#ff8c00" stroke-width="2" stroke-linecap="round"/>
-          <path d="M18 26v4" stroke="#ff8c00" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+      <div class="icon-wrap">
+        <div class="icon-box erp" style="background:#fff; border:1.5px solid rgba(0,120,212,0.15); box-shadow:0 4px 14px rgba(0,120,212,0.15); padding:6px;">
+          <!-- Official Microsoft SharePoint logo SVG -->
+          <svg width="52" height="52" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sp1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#2684D6"/>
+                <stop offset="100%" stop-color="#0B53CE"/>
+              </linearGradient>
+              <linearGradient id="sp2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#40A9F3"/>
+                <stop offset="100%" stop-color="#1A78D4"/>
+              </linearGradient>
+              <linearGradient id="sp3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#69C6F8"/>
+                <stop offset="100%" stop-color="#3BA0EF"/>
+              </linearGradient>
+            </defs>
+            <!-- Back circle -->
+            <circle cx="38" cy="56" r="22" fill="url(#sp1)"/>
+            <!-- Mid circle -->
+            <circle cx="54" cy="40" r="22" fill="url(#sp2)"/>
+            <!-- Front circle -->
+            <circle cx="62" cy="62" r="18" fill="url(#sp3)"/>
+            <!-- White S letter -->
+            <text x="52" y="70" font-family="Segoe UI,Arial" font-weight="800" font-size="32" fill="white" text-anchor="middle">S</text>
+          </svg>
+        </div>
       </div>
-      <span class="app-name">ERP</span>
-      <div class="app-arrow"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></div>
+      <div class="app-name">ERP</div>
+      <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
     </a>
 
-    <!-- SITE WEB -->
     <a href="https://www.itanis.tn/" target="_blank" class="app-card">
-      <div class="icon-wrap web">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <circle cx="18" cy="18" r="12" stroke="url(#wg)" stroke-width="2"/>
-          <ellipse cx="18" cy="18" rx="5" ry="12" stroke="url(#wg)" stroke-width="1.8"/>
-          <path d="M6 18h24" stroke="url(#wg)" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M7.5 12.5h21M7.5 23.5h21" stroke="url(#wg)" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
-          <!-- badge -->
-          <circle cx="26" cy="10" r="5" fill="url(#bg2)"/>
-          <path d="M24.5 10h3M26 8.5v3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
-          <defs>
-            <linearGradient id="wg" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#ff6b35"/>
-              <stop offset="1" stop-color="#ffac33"/>
-            </linearGradient>
-            <linearGradient id="bg2" x1="21" y1="5" x2="31" y2="15" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#ff6b35"/>
-              <stop offset="1" stop-color="#ff8c00"/>
-            </linearGradient>
-          </defs>
-        </svg>
+      <div class="icon-wrap">
+        <div class="icon-box web" style="background:#fff;border:1.5px solid rgba(0,0,0,0.07);box-shadow:0 4px 14px rgba(0,0,0,0.08);overflow:hidden;padding:0;"><img src="data:image/png;base64,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" alt="ITANIS" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"/></div>
       </div>
-      <span class="app-name">Site Web</span>
-      <div class="app-arrow"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></div>
+      <div class="app-name">Site Web</div>
+      <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ESPACES -->
+  <div class="docs-grid">
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Projets&R%C3%A9alisations" target="_blank" class="doc-card" style="--lc:#ff8c00;">
+      <div class="doc-icon">🏗️</div>
+      <div class="doc-body"><div class="doc-name">Projets & Réalisations</div><div class="doc-sub">Études de cas, livrables</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Technique_" target="_blank" class="doc-card" style="--lc:#f5c842;">
+      <div class="doc-icon">🔧</div>
+      <div class="doc-body"><div class="doc-name">Technique</div><div class="doc-sub">Plans, spécifications</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Soci%C3%A9t%C3%A9" target="_blank" class="doc-card" style="--lc:#1a6ec9;">
+      <div class="doc-icon">🏢</div>
+      <div class="doc-body"><div class="doc-name">Documents de la Société</div><div class="doc-sub">Chartes, procédures</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Document_Juridique" target="_blank" class="doc-card" style="--lc:#a0309a;">
+      <div class="doc-icon">⚖️</div>
+      <div class="doc-body"><div class="doc-name">Document Juridique</div><div class="doc-sub">Contrats, conformité</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Administration%20%26%20Finance#" target="_blank" class="doc-card" style="--lc:#ff8c00;">
+      <div class="doc-icon">💰</div>
+      <div class="doc-body"><div class="doc-name">Administration & Finance</div><div class="doc-sub">Budgets, facturation</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Ressources_Humaines#" target="_blank" class="doc-card" style="--lc:#e53030;">
+      <div class="doc-icon">👥</div>
+      <div class="doc-body"><div class="doc-name">Ressources Humaines</div><div class="doc-sub">Paie, congés, avantages</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Commercial_#" target="_blank" class="doc-card" style="--lc:#0f7a3a;">
+      <div class="doc-icon">📊</div>
+      <div class="doc-body"><div class="doc-name">Commercial</div><div class="doc-sub">Clients, ventes, devis</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Communication%26Marketing#" target="_blank" class="doc-card" style="--lc:#007a6a;">
+      <div class="doc-icon">📣</div>
+      <div class="doc-body"><div class="doc-name">Communication & Marketing</div><div class="doc-sub">Visuels, réseaux, marque</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
+    </a>
+
+    <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Archives%26Historique" target="_blank" class="doc-card" style="--lc:#888880;">
+      <div class="doc-icon">🗃️</div>
+      <div class="doc-body"><div class="doc-name">Archives et Historique</div><div class="doc-sub">Historique, dossiers clos</div></div>
+      <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
 
   </div>
 </div>
-
 </body>
 </html>
