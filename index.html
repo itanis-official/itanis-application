@@ -13,7 +13,6 @@
   --or:   #ff8c00;
   --orl:  #ffac33;
   --ord:  #cc6e00;
-  --og05: rgba(255,140,0,0.05);
   --og08: rgba(255,140,0,0.08);
   --og15: rgba(255,140,0,0.15);
   --og20: rgba(255,140,0,0.20);
@@ -24,163 +23,95 @@
   --bd:   rgba(0,0,0,0.07);
   --f:    'Poppins', sans-serif;
 }
-html, body {
-  background: var(--bg); color: var(--tx);
-  font-family: var(--f); -webkit-font-smoothing: antialiased; width: 100%;
+html, body { font-family: var(--f); -webkit-font-smoothing: antialiased; width: 100%; color: var(--tx); }
+
+/* KEYFRAMES */
+@keyframes fadeUp    { from{opacity:0;transform:translateY(18px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+@keyframes shimmer   { 0%{background-position:-200% center} 100%{background-position:200% center} }
+@keyframes pulseRing { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(1.35);opacity:0} }
+@keyframes drawLine  { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+@keyframes iconBounce{ 0%,100%{transform:scale(1)} 40%{transform:scale(1.18) rotate(-4deg)} 70%{transform:scale(0.95) rotate(2deg)} }
+@keyframes glowPulse { 0%,100%{box-shadow:0 4px 14px var(--gs,rgba(113,75,103,0.25))} 50%{box-shadow:0 8px 28px var(--gs,rgba(113,75,103,0.50))} }
+@keyframes titleIn   { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
+
+/* LAYOUT */
+.page { padding: 1.6rem 1.8rem 2.4rem; display: flex; flex-direction: column; gap: 1.1rem; }
+
+/* SECTION TITLE */
+.sec-head {
+  display: flex; align-items: center; gap: 10px;
+  animation: titleIn .5s ease both;
 }
-
-/* ══════════════════════════════════════
-   KEYFRAMES
-══════════════════════════════════════ */
-
-/* entrance */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(18px) scale(0.97); }
-  to   { opacity:1; transform:translateY(0) scale(1); }
+.sec-line {
+  width: 3px; height: 20px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--or), transparent); flex-shrink: 0;
 }
-
-/* floating idle on app icons */
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-5px); }
+.sec-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--or);
 }
+.sec-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,140,0,0.25), transparent); }
 
-/* shimmer sweep */
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-/* pulse ring on app card hover */
-@keyframes pulseRing {
-  0%   { transform:scale(1);   opacity:0.6; }
-  100% { transform:scale(1.35); opacity:0; }
-}
-
-/* divider draw */
-@keyframes drawLine {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-/* doc icon bounce on hover */
-@keyframes iconBounce {
-  0%,100% { transform: scale(1); }
-  40%     { transform: scale(1.18) rotate(-4deg); }
-  70%     { transform: scale(0.95) rotate(2deg); }
-}
-
-/* left bar slide in */
-@keyframes barSlide {
-  from { height: 0; top: 50%; }
-  to   { height: 100%; top: 0; }
-}
-
-/* glow pulse on icon box */
-@keyframes glowPulse {
-  0%,100% { box-shadow: 0 4px 14px var(--gs, rgba(113,75,103,0.25)); }
-  50%     { box-shadow: 0 8px 28px var(--gs, rgba(113,75,103,0.50)); }
-}
-
-/* ══════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════ */
-.page { padding: 1.6rem 1.8rem 2.4rem; display: flex; flex-direction: column; gap: 2rem; }
-
-/* ── DIVIDER ── */
+/* DIVIDER */
 .divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255,140,0,0.30), transparent);
+  background: linear-gradient(to right, transparent, rgba(255,140,0,0.20), transparent);
   transform-origin: center;
   animation: drawLine .8s cubic-bezier(.4,0,.2,1) .3s both;
+  margin: 0.3rem 0;
 }
 
-/* ══════════════════════
-   APPS
-══════════════════════ */
+/* APPS */
 .apps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
 
 .app-card {
-  background: var(--wh);
-  border: 1.5px solid var(--bd);
-  border-radius: 18px;
+  background: var(--wh); border: 1.5px solid var(--bd); border-radius: 18px;
   padding: 1.8rem 1rem 1.4rem;
   display: flex; flex-direction: column; align-items: center; gap: 12px;
-  text-decoration: none; color: inherit;
-  position: relative; overflow: hidden;
+  text-decoration: none; color: inherit; position: relative; overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   transition: transform .32s cubic-bezier(.34,1.4,.64,1), box-shadow .32s, border-color .32s;
-  animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both;
-  cursor: pointer;
+  animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both; cursor: pointer;
 }
-.app-card:nth-child(1){ animation-delay:.05s }
-.app-card:nth-child(2){ animation-delay:.13s }
-.app-card:nth-child(3){ animation-delay:.21s }
-
-/* shimmer overlay */
+.app-card:nth-child(1){animation-delay:.05s} .app-card:nth-child(2){animation-delay:.13s} .app-card:nth-child(3){animation-delay:.21s}
 .app-card::before {
-  content:'';
-  position:absolute; inset:0; border-radius:inherit;
+  content:''; position:absolute; inset:0; border-radius:inherit;
   background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%);
-  background-size: 200% 100%;
-  opacity:0; transition: opacity .3s;
-  pointer-events: none;
+  background-size: 200% 100%; opacity:0; transition: opacity .3s; pointer-events: none;
 }
-/* top glow line */
 .app-card::after {
   content:''; position:absolute; top:0; left:10%; right:10%; height:2px;
   background: linear-gradient(to right, transparent, var(--or), transparent);
-  opacity:0; transition: opacity .3s;
-  border-radius: 0 0 2px 2px;
+  opacity:0; transition: opacity .3s; border-radius: 0 0 2px 2px;
 }
-
-.app-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: rgba(255,140,0,0.32);
-  box-shadow: 0 18px 44px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,140,0,0.08);
-}
+.app-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(255,140,0,0.32); box-shadow: 0 18px 44px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,140,0,0.08); }
 .app-card:hover::before { opacity:1; animation: shimmer 1.2s linear; }
 .app-card:hover::after  { opacity:1; }
 .app-card:active { transform: translateY(-3px) scale(0.98); }
 
-/* pulse ring behind icon */
-.icon-wrap {
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-}
+.icon-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
 .icon-wrap::before {
-  content:'';
-  position:absolute; inset:-6px; border-radius:22px;
-  border: 2px solid var(--or);
-  opacity:0; transform:scale(1);
-  transition: opacity .2s;
+  content:''; position:absolute; inset:-6px; border-radius:22px;
+  border: 2px solid var(--or); opacity:0; transform:scale(1); transition: opacity .2s;
 }
-.app-card:hover .icon-wrap::before {
-  animation: pulseRing .6s ease-out forwards;
-}
+.app-card:hover .icon-wrap::before { animation: pulseRing .6s ease-out forwards; }
 
 .icon-box {
   width: 68px; height: 68px; border-radius: 17px;
   display: flex; align-items: center; justify-content: center;
   transition: transform .32s cubic-bezier(.34,1.4,.64,1), box-shadow .32s;
   flex-shrink: 0; position: relative; z-index: 1;
+  animation: float 3.5s ease-in-out infinite;
 }
 .icon-box.odoo { background:#fff; border:1.5px solid rgba(113,75,103,0.15); --gs:rgba(113,75,103,0.25); }
-.icon-box.erp  { background: linear-gradient(135deg,#0b5394,#1a73e8); --gs:rgba(11,83,148,0.30); }
+.icon-box.erp  { background:#fff; border:1.5px solid rgba(0,120,212,0.15); --gs:rgba(11,83,148,0.30); }
 .icon-box.web  { background:#fff; border:1.5px solid rgba(255,107,53,0.15); --gs:rgba(255,107,53,0.25); }
-
-.app-card:hover .icon-box { transform: scale(1.10) rotate(-2deg); animation: glowPulse 1.4s ease-in-out infinite; }
-
-/* idle float on icon (only when not hovered) */
-.icon-box { animation: float 3.5s ease-in-out infinite; }
 .app-card:nth-child(2) .icon-box { animation-delay: .5s; }
 .app-card:nth-child(3) .icon-box { animation-delay: 1s; }
-.app-card:hover .icon-box { animation: glowPulse 1.4s ease-in-out infinite; }
+.app-card:hover .icon-box { transform: scale(1.10) rotate(-2deg); animation: glowPulse 1.4s ease-in-out infinite; }
 
-.app-name {
-  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-  color: var(--tx2); transition: color .25s, letter-spacing .25s;
-}
+.app-name { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--tx2); transition: color .25s, letter-spacing .25s; }
 .app-card:hover .app-name { color: var(--or); letter-spacing: 0.12em; }
 
 .open-pill {
@@ -188,25 +119,19 @@ html, body {
   background: var(--og08); border: 1px solid rgba(255,140,0,0.18);
   border-radius: 20px; padding: 3px 12px;
   font-size: 0.60rem; font-weight: 600; color: var(--ord);
-  opacity: 0; transform: translateY(6px);
-  transition: opacity .28s, transform .28s;
+  opacity: 0; transform: translateY(6px); transition: opacity .28s, transform .28s;
 }
 .open-pill svg { width:8px; height:8px; stroke:var(--or); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 .app-card:hover .open-pill { opacity:1; transform:translateY(0); }
 
-/* ══════════════════════
-   DOCS
-══════════════════════ */
+/* DOCS */
 .docs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
 
 .doc-card {
-  background: var(--wh);
-  border: 1px solid var(--bd);
-  border-radius: 13px;
+  background: var(--wh); border: 1px solid var(--bd); border-radius: 13px;
   padding: 1rem 1rem 1rem 1.3rem;
   display: flex; align-items: center; gap: 11px;
-  text-decoration: none; color: inherit;
-  position: relative; overflow: hidden;
+  text-decoration: none; color: inherit; position: relative; overflow: hidden;
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   transition: transform .26s cubic-bezier(.34,1.4,.64,1), box-shadow .26s, border-color .26s, background .26s;
   animation: fadeUp .5s cubic-bezier(.34,1.4,.64,1) both;
@@ -216,81 +141,72 @@ html, body {
 .doc-card:nth-child(5){animation-delay:.28s} .doc-card:nth-child(6){animation-delay:.33s}
 .doc-card:nth-child(7){animation-delay:.38s} .doc-card:nth-child(8){animation-delay:.43s}
 .doc-card:nth-child(9){animation-delay:.48s}
-
-/* animated left bar */
 .doc-card::before {
   content:''; position:absolute; left:0; top:0; bottom:0; width:3.5px;
-  background: linear-gradient(180deg, var(--lc, var(--or)), transparent);
-  transform-origin: top;
-  transition: transform .3s ease;
+  background: linear-gradient(180deg, var(--lc,var(--or)), transparent); transform-origin: top;
 }
-/* ripple on click */
 .doc-card::after {
-  content:''; position:absolute;
-  width:0; height:0; border-radius:50%;
+  content:''; position:absolute; width:0; height:0; border-radius:50%;
   background: radial-gradient(circle, var(--og15) 0%, transparent 70%);
   top:50%; left:50%; transform:translate(-50%,-50%);
-  transition: width .4s ease, height .4s ease, opacity .4s ease;
-  opacity:0; pointer-events:none;
+  transition: width .4s ease, height .4s ease, opacity .4s ease; opacity:0; pointer-events:none;
 }
 .doc-card:active::after { width:200px; height:200px; opacity:1; }
-
-.doc-card:hover {
-  transform: translateX(5px);
-  border-color: rgba(255,140,0,0.22);
-  box-shadow: 0 6px 22px rgba(0,0,0,0.09);
-  background: #fefefe;
-}
-.doc-card:hover .doc-icon {
-  background: var(--og08);
-  border-color: rgba(255,140,0,0.22);
-  animation: iconBounce .5s ease;
-}
+.doc-card:hover { transform: translateX(5px); border-color: rgba(255,140,0,0.22); box-shadow: 0 6px 22px rgba(0,0,0,0.09); background: #fefefe; }
+.doc-card:hover .doc-icon { background: var(--og08); border-color: rgba(255,140,0,0.22); animation: iconBounce .5s ease; }
 .doc-card:active { transform: translateX(2px); }
-
 .doc-icon {
   width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: var(--s1); border: 1px solid var(--bd);
-  font-size: 18px;
-  transition: background .25s, border-color .25s, transform .25s;
+  background: var(--s1); border: 1px solid var(--bd); font-size: 18px;
+  transition: background .25s, border-color .25s;
 }
 .doc-body { flex:1; min-width:0; }
-.doc-name {
-  font-size: 0.76rem; font-weight: 600; color: var(--tx); line-height: 1.3;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  transition: color .25s;
-}
+.doc-name { font-size: 0.76rem; font-weight: 600; color: var(--tx); line-height: 1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition: color .25s; }
 .doc-sub  { font-size: 0.62rem; color: var(--tx3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
 .doc-card:hover .doc-name { color: var(--or); }
-
 .doc-arr {
   width: 22px; height: 22px; border-radius: 50%; flex-shrink:0;
-  border: 1px solid var(--bd);
-  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--bd); display: flex; align-items: center; justify-content: center;
   opacity:0; transform: translateX(-6px) scale(0.8);
   transition: opacity .22s, transform .22s cubic-bezier(.34,1.4,.64,1), border-color .22s, background .22s;
 }
 .doc-arr svg { width:8px; height:8px; stroke:var(--or); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 .doc-card:hover .doc-arr { opacity:1; transform:translateX(0) scale(1); border-color:var(--og40); background: var(--og08); }
 
-/* responsive */
+/* RESPONSIVE */
 @media (max-width:700px) {
-  .apps-grid { gap:8px; }
-  .docs-grid  { grid-template-columns: repeat(2,1fr); }
-  .icon-box { width:56px; height:56px; border-radius:14px; }
-  .app-card { padding:1.4rem 0.7rem 1.1rem; border-radius:14px; }
-  .page { padding:1.2rem 1rem 2rem; gap:1.5rem; }
+  .apps-grid { gap:10px; }
+  .docs-grid { grid-template-columns: repeat(2,1fr); }
+  .icon-box { width:60px; height:60px; border-radius:15px; }
+  .app-card { padding:1.5rem 0.8rem 1.2rem; border-radius:16px; }
+  .app-name { font-size:0.72rem; }
+  .page { padding:1.2rem 1rem 2rem; gap:1rem; }
+  .doc-name { font-size:0.72rem; }
+  .doc-sub  { font-size:0.60rem; }
+  .doc-icon { width:36px; height:36px; font-size:16px; }
+  .doc-card { padding:0.8rem 0.8rem 0.8rem 1rem; gap:8px; }
 }
-@media (max-width:440px) { .docs-grid { grid-template-columns: 1fr; } }
+@media (max-width:380px) {
+  .icon-box { width:50px; height:50px; border-radius:13px; }
+  .app-card { padding:1.2rem 0.5rem 1rem; }
+  .app-name { font-size:0.65rem; letter-spacing:0.04em; }
+  .docs-grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
 <div class="page">
 
+  <!-- ── TITRE APPLICATIONS ── -->
+  <div class="sec-head">
+    <div class="sec-line"></div>
+    <span class="sec-label">Applications</span>
+    <div class="sec-rule"></div>
+  </div>
+
   <!-- APPS -->
   <div class="apps-grid">
-
     <a href="https://odoo.itanis.tn/web/login" target="_blank" class="app-card">
       <div class="icon-wrap">
         <div class="icon-box odoo">
@@ -307,30 +223,16 @@ html, body {
 
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Socit/Forms/AllItems.aspx" target="_blank" class="app-card">
       <div class="icon-wrap">
-        <div class="icon-box erp" style="background:#fff; border:1.5px solid rgba(0,120,212,0.15); box-shadow:0 4px 14px rgba(0,120,212,0.15); padding:6px;">
-          <!-- Official Microsoft SharePoint logo SVG -->
+        <div class="icon-box erp" style="padding:6px;">
           <svg width="52" height="52" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="sp1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#2684D6"/>
-                <stop offset="100%" stop-color="#0B53CE"/>
-              </linearGradient>
-              <linearGradient id="sp2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#40A9F3"/>
-                <stop offset="100%" stop-color="#1A78D4"/>
-              </linearGradient>
-              <linearGradient id="sp3" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#69C6F8"/>
-                <stop offset="100%" stop-color="#3BA0EF"/>
-              </linearGradient>
+              <linearGradient id="sp1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2684D6"/><stop offset="100%" stop-color="#0B53CE"/></linearGradient>
+              <linearGradient id="sp2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#40A9F3"/><stop offset="100%" stop-color="#1A78D4"/></linearGradient>
+              <linearGradient id="sp3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#69C6F8"/><stop offset="100%" stop-color="#3BA0EF"/></linearGradient>
             </defs>
-            <!-- Back circle -->
             <circle cx="38" cy="56" r="22" fill="url(#sp1)"/>
-            <!-- Mid circle -->
             <circle cx="54" cy="40" r="22" fill="url(#sp2)"/>
-            <!-- Front circle -->
             <circle cx="62" cy="62" r="18" fill="url(#sp3)"/>
-            <!-- White S letter -->
             <text x="52" y="70" font-family="Segoe UI,Arial" font-weight="800" font-size="32" fill="white" text-anchor="middle">S</text>
           </svg>
         </div>
@@ -341,74 +243,73 @@ html, body {
 
     <a href="https://www.itanis.tn/" target="_blank" class="app-card">
       <div class="icon-wrap">
-        <div class="icon-box web" style="background:#fff;border:1.5px solid rgba(0,0,0,0.07);box-shadow:0 4px 14px rgba(0,0,0,0.08);overflow:hidden;padding:0;"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABSAH4DASIAAhEBAxEB/8QAHAABAAMAAgMAAAAAAAAAAAAAAAIDBAEFBgcI/8QANhAAAQMDAQQHBgUFAAAAAAAAAQACAwQFEQYSEyExBzRBUWGSsSJTcoGC0RQVMlJxCBahsuH/xAAYAQEAAwEAAAAAAAAAAAAAAAAAAQIFA//EACERAQACAgEFAAMAAAAAAAAAAAABAgMRIQQSE0FhMXHR/9oADAMBAAIRAxEAPwD7LREQCouOEcVRK4khrf1OOAg5dL7Wy0Fzu4IBUHjsMH8u/wCK6KNsbdlvzPaVJBn2Kj9sfmP2TYqO6PzH7LQiDPsVHdH5j9k2aj9sfnP2WhEGcukZxfGcd7TlTY8OAIOQVas87d08SN4NccOHj3oLwVyq2OyrAgIiICFEPJBW84Cph41Q8Gk+itk5Kmm639B9Qg1oqKyrpaNsbqqeOESSNiZtnG09xwGjxKwt1HYnVoom3WlM7nbAZt83dy5Xz46TEWtETP10phyXjdazMfp2qLqLXqaw3S5y2233SnqayJpdJEwnaaAQCT8yF26vW9bxus7MmK+Ke28TE/eBFRX1UVFSSVM2dhmM48Tgf5KosdybdKM1LIXxN2y0Bx5gdv8ABUeSvd2b5RGO0079cNyrqhmmk8GkqxV1PVpfgPorqKoStDVkgPBamoJIiICFEKCmXkqabrf0H1Cul5Kmm639B9Qg8Y6TuNRpodn5xD/sFl6Trbb6S32yeloaaCU3OEF8cYa7HHhkLzOuoKWtkp5KiFsj6eTeRFwzsu7/AOVju1O2sq6KnqaE1MTKgPDzyic1jnNfjt4jHHtIWX1HQTl8v43bWvnEfxq9P18YvFHOq73929cdPt+GjtNx2bRNBBDrPVc34C2/hYWiUE8ZJz2kMaSc8cOLV610lrbWGk9Ba30dqOfUsFwjslXddN3G9MLaySNrCJI3Oy5u3G7Dhhx9lwPDGF72rrdan6y/uqp01W1F3t9PNTUtZu9vZhA2nbtpOAXEluQNo457JC0Xx9DqHTbKeutFXW2y7W95miMLmyCNzATG4Di1xDsYyDwWlERWNRDNtabzu07l8z6nv3TJo3+n1stbcp9QWa6WulrKO/NkLay2SPMchin57xhyWh3jg8wFbdajpL1NRai/JKrUFdbrbr2pgrqSz1zaSqFK2niEbIncmtDiSQOZdkgnJX0ReaC03XSx0jW6Xq6izy00MX4M0+zEIt41gbkfpLBh2BxAbkHguhr+jzRGobZNaa/SFzZR1VxbcalgkmhElTMzjK8seC4tGGkcQ3sCn3vSPWtvX3QZXstXStRWO/UHSZb7ncKOd9AzUF9FZTyCMZkOw3ADgORIPyK+j6nq0vwH0Xgehehzo90TfxfdO2BtNcGxuibO+olmc1ruYbvHu2c94XnlT1aX4D6KVWan5Ba28lkp+QWtvJBJERAQoh5IKpeSoput/QfUK+Tks7XCOpa48AeB+aDaiIgIiICIiAq6nq0vwH0ViorXBsBb2v8AZCCqDktTVmgC0tQSREQEREEHjgss7MgrYQq3tygzwVRYNibJA5O+60iogIzvmfM4WaSLPYqXQ+CDfv4PfR+YJv4PfR+YLrtx4JuPBB2O/g99H5gm/g99H5guu3HguRD4INslXC0ey7bPc1Zcvmk23/IDsXLIfBXxx4QSibhXBRaMKaAiIgIiICieSIgg5QKIgiiIgLkIiCTVY1EQSC5REBERB//Z" alt="ITANIS" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"/></div>
+        <div class="icon-box web" style="overflow:hidden;padding:0;">
+          <img src="data:image/png;base64,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" alt="ITANIS" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"/>
+        </div>
       </div>
       <div class="app-name">Site Web</div>
       <div class="open-pill"><svg viewBox="0 0 10 10"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>Ouvrir</div>
     </a>
-
   </div>
 
   <div class="divider"></div>
 
+  <!-- ── TITRE ESPACES DOCUMENTAIRES ── -->
+  <div class="sec-head">
+    <div class="sec-line"></div>
+    <span class="sec-label">Espaces Documentaires</span>
+    <div class="sec-rule"></div>
+  </div>
+
   <!-- ESPACES -->
   <div class="docs-grid">
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Projets&R%C3%A9alisations" target="_blank" class="doc-card" style="--lc:#ff8c00;">
       <div class="doc-icon">🏗️</div>
       <div class="doc-body"><div class="doc-name">Projets & Réalisations</div><div class="doc-sub">Études de cas, livrables</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Technique_" target="_blank" class="doc-card" style="--lc:#f5c842;">
       <div class="doc-icon">🔧</div>
       <div class="doc-body"><div class="doc-name">Technique</div><div class="doc-sub">Plans, spécifications</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Documents%20de%20la%20Soci%C3%A9t%C3%A9" target="_blank" class="doc-card" style="--lc:#1a6ec9;">
       <div class="doc-icon">🏢</div>
       <div class="doc-body"><div class="doc-name">Documents de la Société</div><div class="doc-sub">Chartes, procédures</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Document_Juridique" target="_blank" class="doc-card" style="--lc:#a0309a;">
       <div class="doc-icon">⚖️</div>
       <div class="doc-body"><div class="doc-name">Document Juridique</div><div class="doc-sub">Contrats, conformité</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Administration%20%26%20Finance#" target="_blank" class="doc-card" style="--lc:#ff8c00;">
       <div class="doc-icon">💰</div>
       <div class="doc-body"><div class="doc-name">Administration & Finance</div><div class="doc-sub">Budgets, facturation</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Ressources_Humaines#" target="_blank" class="doc-card" style="--lc:#e53030;">
       <div class="doc-icon">👥</div>
       <div class="doc-body"><div class="doc-name">Ressources Humaines</div><div class="doc-sub">Paie, congés, avantages</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Commercial_#" target="_blank" class="doc-card" style="--lc:#0f7a3a;">
       <div class="doc-icon">📊</div>
       <div class="doc-body"><div class="doc-name">Commercial</div><div class="doc-sub">Clients, ventes, devis</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Communication%26Marketing#" target="_blank" class="doc-card" style="--lc:#007a6a;">
       <div class="doc-icon">📣</div>
       <div class="doc-body"><div class="doc-name">Communication & Marketing</div><div class="doc-sub">Visuels, réseaux, marque</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
     <a href="https://itanis.sharepoint.com/sites/ITANIS-cloud/Archives%26Historique" target="_blank" class="doc-card" style="--lc:#888880;">
       <div class="doc-icon">🗃️</div>
       <div class="doc-body"><div class="doc-name">Archives et Historique</div><div class="doc-sub">Historique, dossiers clos</div></div>
       <div class="doc-arr"><svg viewBox="0 0 9 9"><path d="M2 7L7 2M7 2H3M7 2V6"/></svg></div>
     </a>
-
   </div>
+
 </div>
 </body>
 </html>
